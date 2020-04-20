@@ -1,0 +1,20 @@
+#### you need 3 scripts to do this, they are all in the annotating_DIAMONDmatrix_w_COG_workflow directory ####
+
+1.) ### Find ORFs in DIAMOND database
+
+./GetAinB.py ../BLAST_databases/eukaryote_KOG/COG_and_KOG_db/Namibia_fungi/list\ of\ fungal\ hits\ in\ Namibia\ transcriptomes_asof_6.6.2019.txt ../BLAST_databases/Diamond_database/all_genomes_andMMETS_09022019.fasta >../BLAST_databases/eukaryote_KOG/COG_and_KOG_db/Namibia_fungi/all_fungi_ORFs_Namibia_asof_6.6.2019.fasta
+
+2.) ### BLAST or DIAMOND the ORFs against the COG database in COG_db/COGdb
+
+####Excel stopping point -> you have to delete the '|' and other information from the COG headerin the second column of the diamond output to make it compatible with the first script.
+
+3.) ### search for the COG annotations for all of the hits, make a new tabular output (there are two scripts needed, the output from part1 is the input for part2
+
+perl Get_listA_inl_listB_for_COG_searches_part1.pl COG_number_codes.csv NorthAtlantic/all_db_hits_site_11_12_15_metagenome_metatranscriptome_DIAMONDresults.txt >test.txt
+
+perl Get_listA_inl_listB_for_COG_searches_part2.pl COG_ids.txt NorthAtlantic/test.txt  >NorthAtlantic/COG_ids_mapped_to_Genbank_ids.txt
+
+4.) ### add this tabular output onto the BLAST/DIAMOND matrix (from blast_to_matrix.py) using add_COG_to_matrix.pl #####
+
+
+perl ../../../scripts/add_COG_to_matrix.pl COG_ids_mapped_to_Genbank_ids.txt test/all_site_11_12_15_metagenome_metatranscriptome_ORFs_DIAMOND_matrix_contaminantsrevmoed.txt >test/test.txt
